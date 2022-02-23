@@ -9,12 +9,16 @@ class Caller:
         self.sex = "male" if random.uniform(0, 1) < self.prob_male else "female" 
         self.acu_patient = False
         self.prob_callback = prob_callback
+        self.timer = 0
         
         self.priority = self.determine_priority()         # Priority of triage call
         
         # Counters to keep track of how long patient waited to have contact with GP
         # and the number of visits to ED/GP/111/999 following index call
         self.q_time_gp_contact = 0
+        self.q_time_ed_contact = 0
+        self.q_time_111_contact = 0
+        self.q_time_999_contact = 0
         self.v_number_ED  = 0
         self.v_number_GP = 0
         self.v_number_111 = 0

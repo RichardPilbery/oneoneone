@@ -5,7 +5,7 @@
 # Load packages
 
 import csv
-from hms_model import HMS_Model
+from hsm_model import HSM_Model
 from g import G
 
 
@@ -20,6 +20,5 @@ with open("trial_111_results.csv", "w", newline='') as f:
 # ED_Model class, and call its run method
 for run in range(G.number_of_runs):
     print (f"Run {run+1} of {G.number_of_runs}")
-    my_111_model = HMS_Model(run)
+    my_111_model = HSM_Model(run)
     my_111_model.run()
-    print ()

@@ -8,4 +8,6 @@ class G:
     
     prob_callback = 0.5
     prob_male = 0.4
+    
+    pt_time_in_sim = 4320
      

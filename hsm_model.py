@@ -6,12 +6,15 @@ from caller import Caller
 from g import G
 # Health Care System model
 # as it relates to 111 patients
-class HMS_Model:
+class HSM_Model:
     def __init__(self, run_number):
         self.env = simpy.Environment()
         self.patient_counter = 0
         
-        self.GP = simpy.PriorityResource(self.env, capacity=G.number_of_gp)
+        self.GP = simpy.PriorityResource(self.env, capacity=2)
+        self.ED = simpy.PriorityResource(self.env, capacity=2)
+        self.Treble1 = simpy.PriorityResource(self.env, capacity=2)
+        self.Treble9 = simpy.PriorityResource(self.env, capacity=10)
         
         self.mean_q_time_speak_to_gp = 0
         self.mean_q_time_contact_gp = 0
@@ -41,21 +44,61 @@ class HMS_Model:
             # Freeze function until interarrival time has elapsed
             yield self.env.timeout(sampled_interarrival)
             
+    def next_destination(self, patient):
+        return random.choice([1, 2, 3, 4])
+            
     def patient_journey(self, patient):
         # Record the time a patient waits to speak/contact GP
-        start_q_GP = self.env.now
+    
+        while patient.timer < (G.warm_up_duration + G.pt_time_in_sim):
+            
+            next_dest = self.next_destination(patient)
+            
+            if(next_dest == 1):
+                #print(f'Patient {patient.id} is off to GP')
+                start_q_time = self.env.now
+                with self.GP.request(priority=patient.priority) as req:
+                    yield self.env.process(self.step_visit(patient, req, start_q_time, 'GP'))
+            elif(next_dest == 2):
+                #print(f'Patient {patient.id} is off to ED')
+                start_q_time = self.env.now
+                with self.ED.request(priority=patient.priority) as req:
+                    yield self.env.process(self.step_visit(patient, req, start_q_time, 'ED'))
+            elif(next_dest == 3):
+                #print(f'Patient {patient.id} is off to 111')
+                start_q_time = self.env.now
+                with self.Treble1.request(priority=patient.priority) as req:
+                    yield self.env.process(self.step_visit(patient, req, start_q_time, '111'))
+            elif(next_dest == 4):
+                #print(f'Patient {patient.id} is off to 999')
+                start_q_time = self.env.now
+                with self.Treble9.request(priority=patient.priority) as req:
+                    yield self.env.process(self.step_visit(patient, req, start_q_time, '999'))
+
+
+    def step_visit(self, patient, yieldvalue, start_time, visit_type):
+        start = self.env.now
+        yield yieldvalue
+        end = self.env.now
+        # print(f'Time diff {end-start}')
         
-        with self.GP.request(priority=patient.priority) as req:
-            yield req
-            
-            end_q_GP = self.env.now
-            patient.q_time_gp_contact = end_q_GP - start_q_GP
-            #print(f'Patient waited {patient.q_time_gp_contact} to be seen')
-            
-            yield self.env.timeout(10)
-            
+        # print(f'Patient waited {patient.q_time_gp_contact} to be seen')
+        yield self.env.timeout(10)
+        end_q_time = self.env.now
+        q_time = end_q_time - start_time
+        if(visit_type == 'GP'):
+            patient.q_time_gp_contact = q_time
+        elif(visit_type == "ED"):
+            patient.q_time_ed_contact = q_time
+        elif(visit_type == "111"):
+            patient.q_time_111_contact = q_time
+        elif(visit_type == "999"):
+            patient.q_time_999_contact = q_time
+
         if self.env.now > G.warm_up_duration:
             self.store_patient_results(patient)
+            patient.timer += q_time
+            
    
     def calculate_mean_q_times(self):
         self.mean_q_time_contact_gp = (self.results_df["Q_Time_Speak_to_GP"].mean())
@@ -72,7 +115,7 @@ class HMS_Model:
         df_to_add = pd.DataFrame(
             {
                 "P_ID":[patient.id],
-                "Q_Time_Speak_to_GP":[patient.q_time_gp_contact]
+                "Q_Time_Speak_to_GP":[patient.q_time_gp_contact],
             }
         )
         
