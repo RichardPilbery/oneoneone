@@ -10,17 +10,26 @@ class Caller:
         self.acu_patient = False
         self.prob_callback = prob_callback
         self.timer = 0
+        self.location = ''
         
         self.priority = self.determine_priority()         # Priority of triage call
         
         # Counters to keep track of how long patient waited to have contact with GP
         # and the number of visits to ED/GP/111/999 following index call
-        self.q_time_gp_contact = 0
-        self.q_time_ed_contact = 0
-        self.q_time_111_contact = 0
-        self.q_time_999_contact = 0
-        self.v_number_ED  = 0
-        self.v_number_GP = 0
+        self.journey_steps = []
+        
+        self.wait_time_gp = -1.0
+        self.wait_time_ed = -1.0
+        self.wait_time_111 =-1.0
+        self.wait_time_999 = -1.0
+        
+        self.visit_time_gp = -1.0
+        self.visit_time_ed = -1.0
+        self.visit_time_111 = -1.0
+        self.visit_time_999 = -1.0
+
+        self.v_number_gp = 0
+        self.v_number_ed  = 0
         self.v_number_111 = 0
         self.v_number_999 = 0
         

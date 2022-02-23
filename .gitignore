@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.Rproj.user
+
+# CSV files( can be big)
+*.csv

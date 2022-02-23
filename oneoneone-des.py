@@ -10,11 +10,11 @@ from g import G
 
 
 # Create a file to store trial results
-with open("trial_111_results.csv", "w", newline='') as f:
-    writer = csv.writer(f, delimiter=",")
-    column_headers = ["Run",
-                      "Mean_Q_Time_Speak_to_GP"]
-    writer.writerow(column_headers)
+# with open("trial_111_results.csv", "w", newline='') as f:
+#     writer = csv.writer(f, delimiter=",")
+#     column_headers = ["Run",
+#                       "Mean_Q_Time_Speak_to_GP"]
+#     writer.writerow(column_headers)
 
 # For the number of runs specified in the g class, create an instance of the
 # ED_Model class, and call its run method
