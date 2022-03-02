@@ -1,19 +1,19 @@
 # Global parameter values
 class G:
-    call_inter = 5              # Call inter-arrival time in minutes
-    sim_duration = 1000          # 96 hours 5760
-    warm_up_duration = 0      # 24 hours = 1440
+    call_inter = 1              # Call inter-arrival time in minutes
+    sim_duration = 5760         # 96 hours 5760
+    warm_up_duration = 1440     # 24 hours = 1440
     number_of_runs = 1          # Number of runs
     number_of_gp = 5
     number_of_ed = 5
-    number_of_111 = 20
-    number_of_999 = 10
+    number_of_111 = 10
+    number_of_999 = 6
     
     prob_callback = 0.5
     prob_male = 0.4
     prob_baulk = 0.5
     
-    pt_time_in_sim = 1440 # 4320 for 72 hours
+    pt_time_in_sim = 4320 # 4320 for 72 hours
     
     all_results_location = 'all_results.csv'
     

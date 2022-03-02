@@ -5,10 +5,14 @@
 # Load packages
 
 import csv
+import os
+import time
 from hsm_model import HSM_Model
 from g import G
 
-
+if os.path.isfile(G.all_results_location):
+    print('Deleting file')
+    os.remove(G.all_results_location)
 # Create a file to store trial results
 # with open("trial_111_results.csv", "w", newline='') as f:
 #     writer = csv.writer(f, delimiter=",")
@@ -19,6 +23,8 @@ from g import G
 # For the number of runs specified in the g class, create an instance of the
 # ED_Model class, and call its run method
 for run in range(G.number_of_runs):
+    start = time.process_time()
     print (f"Run {run+1} of {G.number_of_runs}")
     my_111_model = HSM_Model(run)
     my_111_model.run()
+    print(f'Run {run+1} took {time.process_time() - start} seconds to run')
