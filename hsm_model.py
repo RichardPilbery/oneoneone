@@ -25,26 +25,13 @@ class HSM_Model:
         self.results_df = pd.DataFrame()
         self.results_df["P_ID"]           = []
         self.results_df["run_number"]     = []
-        self.results_df["journey_steps"]  = []
-        self.results_df["location"]       = []
-        self.results_df["wait_time_gp"]   = []
-        self.results_df["wait_time_ed"]   = []
-        self.results_df["wait_time_111"]  = []
-        self.results_df["wait_time_999"]  = []
-        self.results_df["visit_time_gp"]  = []
-        self.results_df["visit_time_ed"]  = []
-        self.results_df["visit_time_111"] = []
-        self.results_df["visit_time_999"] = []
-        self.results_df["v_number_ed"]    = []
-        self.results_df["v_number_gp"]    = []
-        self.results_df["v_number_111"]   = []
-        self.results_df["v_number_999"]   = []
+        self.results_df["activity"]       = []
+        self.results_df["timestamp"]      = []
+        self.results_df["status"]         = []
+        self.results_df["instance_id"]    = []
         self.results_df.set_index("P_ID", inplace=True)
         
         self.run_number = run_number
-        
-        # Think about baulk rate
-        # Bypass to ED/999/111 ?
         
     def generate_111_calls(self):
         # Run generator until simulation ends
@@ -71,51 +58,48 @@ class HSM_Model:
         # Record the time a patient waits to speak/contact GP
         loop = 0
         break_loop = 0
+        instance_id = 0
+        patient_enters_sim = self.env.now
     
         while patient.timer < (G.warm_up_duration + G.pt_time_in_sim):
             
-            if(loop == 0):
-                # First time will see GP
-                next_dest = 'GP'
-                loop += 1
-            else:
-                next_dest = self.next_destination(patient)
-                
-            patient.location = next_dest
-            patient.journey_steps.append(next_dest)
-                
+            instance_id += 1
+            
+            next_dest = self.next_destination(patient)
+                            
+            results = {
+                "patient_id"  : patient.id,
+                "activity"    : next_dest,
+                "timestamp"   : self.env.now,         
+                "status"      : 'scheduled',
+                "instance_id" : instance_id,
+            }
+
+            
+            if self.env.now > G.warm_up_duration:
+                self.store_patient_results(results)
+            
             if(next_dest == 'GP'):
                 #print(f'Patient {patient.id} is off to GP')
-                start_wait_time = self.env.now
                 with self.GP.request(priority=patient.priority) as req:
-                    yield self.env.process(self.step_visit(patient, req, start_wait_time, 'GP'))
+                    yield self.env.process(self.step_visit(patient, req, instance_id, 'GP'))
             elif(next_dest == 'ED'):
                 #print(f'Patient {patient.id} is off to ED')
-                start_wait_time = self.env.now
                 with self.ED.request(priority=patient.priority) as req:
-                    yield self.env.process(self.step_visit(patient, req, start_wait_time, 'ED'))
+                    yield self.env.process(self.step_visit(patient, req, instance_id, 'ED'))
             elif(next_dest == '111'):
                 #print(f'Patient {patient.id} is off to 111')
-                start_wait_time = self.env.now
                 with self.Treble1.request(priority=patient.priority) as req:
-                    yield self.env.process(self.step_visit(patient, req, start_wait_time, '111'))
+                    yield self.env.process(self.step_visit(patient, req, instance_id, '111'))
             elif(next_dest == '999'):
                 #print(f'Patient {patient.id} is off to 999')
-                start_wait_time = self.env.now
                 with self.Treble9.request(priority=patient.priority) as req:
-                    yield self.env.process(self.step_visit(patient, req, start_wait_time, '999'))
+                    yield self.env.process(self.step_visit(patient, req, instance_id, '999'))
             elif(next_dest == 'baulk'):
                 break_loop = 1
                 break
-                    
-            self.store_patient_results(patient)
-         
-        # print(self.results_df)
-        if(break_loop == 1):
-            print(self.results_df)
-        self.write_all_results() 
-
-         
+            
+            patient.timer = self.env.now - patient_enters_sim
                     
     def visit_time(self, visit_type):
         
@@ -129,73 +113,49 @@ class HSM_Model:
         return visit_time_lookup[visit_type]
 
 
-    def step_visit(self, patient, yieldvalue, start_time, visit_type):
+    def step_visit(self, patient, yieldvalue, instance_id, visit_type):
         visit_duration = self.visit_time(visit_type)
         # Wait time to access service
         yield yieldvalue
         
-        end_wait_time = self.env.now
-        wait_time = end_wait_time - start_time
+        results = {
+            "patient_id"  : patient.id,
+            "activity"    : visit_type,
+            "timestamp"   : self.env.now,         
+            "status"      : 'start',
+            "instance_id" : instance_id,
+        }
+
+        if self.env.now > G.warm_up_duration:
+            self.store_patient_results(results)
         
         # Duration of visit
         yield self.env.timeout(random.expovariate(1.0 / visit_duration))
         
-        visit_time = self.env.now - end_wait_time
+        results = {
+            "patient_id"  : patient.id,
+            "activity"    : visit_type,
+            "timestamp"   : self.env.now,         
+            "status"      : 'completed',
+            "instance_id" : instance_id,
+        }
         
-        if(visit_type == 'GP'):
-            patient.v_number_gp = 1
-            patient.wait_time_gp = wait_time,
-            patient.visit_time_gp = visit_time
-
-
-        elif(visit_type == "ED"):
-            patient.v_number_ed = 1
-            patient.wait_time_ed = wait_time,
-            patient.visit_time_ed = visit_time
-        elif(visit_type == "111"):
-            patient.v_number_111 = 1
-            patient.wait_time_111 = wait_time,
-            patient.visit_time_111 = visit_time
-        elif(visit_type == "999"):
-            patient.v_number_999 = 1
-            patient.wait_time_999 = wait_time,
-            patient.visit_time_999 = visit_time
-
         if self.env.now > G.warm_up_duration:
-            self.store_patient_results(patient)
-            patient.timer += (wait_time + visit_time)
+            self.store_patient_results(results)
             
    
     def calculate_mean_q_times(self):
         self.mean_q_time_contact_gp = (self.results_df["Q_Time_Speak_to_GP"].mean())
             
-    def store_patient_results(self, patient):        
-        # NaNs are automatically ignored by Pandas when calculating the mean
-        # etc.  We can create a nan by casting the string 'nan' as a float :
-        # float("nan")
-        # if patient.acu_patient == True:
-        #     patient.q_time_ed_assess = float("nan")
-        # else:
-        #     patient.q_time_acu_assess = float("nan")
-
+    def store_patient_results(self, results):        
         df_to_add = pd.DataFrame(
             {
-                "P_ID"            : [patient.id],
+                "P_ID"            : [results["patient_id"]],
                 "run_number"      : [self.run_number],
-                "journey_steps"   : [patient.journey_steps],
-                "location"        : [patient.location],
-                "wait_time_gp"    : [patient.wait_time_gp],
-                "wait_time_ed"    : [patient.wait_time_ed],
-                "wait_time_111"   : [patient.wait_time_111],
-                "wait_time_999"   : [patient.wait_time_999],
-                "visit_time_gp"   : [patient.visit_time_gp],
-                "visit_time_ed"   : [patient.visit_time_ed],
-                "visit_time_111"  : [patient.visit_time_111],
-                "visit_time_999"  : [patient.visit_time_999],
-                "v_number_gp"     : [patient.v_number_gp],
-                "v_number_ed"     : [patient.v_number_ed],
-                "v_number_111"    : [patient.v_number_111],
-                "v_number_999"    : [patient.v_number_999],
+                "activity"        : [results["activity"]],
+                "timestamp"       : [results["timestamp"]],
+                "status"          : [results["status"]],
+                "instance_id"     : [results["instance_id"]]
             }
         )
         
@@ -232,6 +192,7 @@ class HSM_Model:
         
         # Write run results to file
         # self.write_run_results()
+        self.write_all_results() 
         
 
         
