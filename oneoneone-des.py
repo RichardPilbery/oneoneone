@@ -8,6 +8,7 @@ import csv
 import os
 import time
 from hsm_model import HSM_Model
+import multiprocessing as mp
 from g import G
 
 if os.path.isfile(G.all_results_location):
@@ -22,9 +23,17 @@ if os.path.isfile(G.all_results_location):
 
 # For the number of runs specified in the g class, create an instance of the
 # ED_Model class, and call its run method
-for run in range(G.number_of_runs):
+
+def runSim(run):
     start = time.process_time()
     print (f"Run {run+1} of {G.number_of_runs}")
     my_111_model = HSM_Model(run)
     my_111_model.run()
     print(f'Run {run+1} took {time.process_time() - start} seconds to run')
+
+nprocess = 10
+
+if __name__ == '__main__':    
+    pool = mp.Pool(processes=nprocess)
+    pool.map(runSim, list(range(0, G.number_of_runs)))
+    
