@@ -1,4 +1,6 @@
+from math import floor
 import random
+from g import G
 
 # Class representing patients who have made a 111 call
 class Caller:
@@ -23,4 +25,7 @@ class Caller:
     # for a GP contact
     def determine_priority(self):
         self.priority = random.randint(1,5)
+    
+        
+        
          

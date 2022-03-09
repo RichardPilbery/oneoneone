@@ -1,6 +1,9 @@
 # Global parameter values
 class G:
-    call_inter = 1              # Call inter-arrival time in minutes
+    call_inter = 0.5            # Call inter-arrival time in minutes
+    start_day = "Mon"
+    start_hour = 9
+    
     sim_duration = 5760         # 96 hours 5760
     warm_up_duration = 1440     # 24 hours = 1440
     number_of_runs = 10         # Number of runs

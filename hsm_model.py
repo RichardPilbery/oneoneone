@@ -6,6 +6,9 @@ import random
 import pandas as pd
 from caller import Caller
 from g import G
+from call_dispositions import CallDispositions
+from math import floor
+
 # Health Care System model
 # as it relates to 111 patients
 class HSM_Model:
@@ -33,10 +36,39 @@ class HSM_Model:
         
         self.run_number = run_number
         
+        self.call_interarrival_times_lu = CallDispositions.call_arrivals
+        
+    # Method to determine the current day and hour
+    # based on starting day/hour and elapsed sim time
+    def date_time_of_call(self, elapsed_time):
+        dow = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        G.start_day # Mon
+        G.start_hour # 9
+        
+        index_dow = dow.index(G.start_day)
+        # Calculate this day of the week it is, taking into account the starting day
+        # and start hour.    
+        elapsed_days = floor((elapsed_time + (G.start_hour * 60)) / 1440) % 7 + index_dow
+        if elapsed_days > 6:
+            elapsed_days = elapsed_days - 7
+            
+        index_dow = dow.index(G.start_day)        
+        elapsed_days = floor(elapsed_time / 1440) % 7 + index_dow
+        if elapsed_days > 6:
+            elapsed_days = elapsed_days - 7
+            
+        elapsed_hours = floor(elapsed_time + (G.start_hour * 60)) % 24
+        if elapsed_hours > 24:
+            elapsed_hours = elapsed_hours - 24
+        
+        return [dow[elapsed_days], elapsed_hours]
+        
     def generate_111_calls(self):
         # Run generator until simulation ends
         # Stop creating patients after warmup/sim time to allow existing
         # patients 72 hours to work through sim
+        
+        
         if(self.env.now < G.sim_duration + G.warm_up_duration):
             while True:
                 self.patient_counter += 1
@@ -46,7 +78,15 @@ class HSM_Model:
                 
                 self.env.process(self.patient_journey(pt))
                 
-                sampled_interarrival = random.expovariate(1.0 / G.call_inter)
+                # Get current day of week and hour of day
+                [dow, hod] = self.date_time_of_call(self.env.now)
+                inter_time = float(self.call_interarrival_times_lu.query("hour == @hod & day == @dow")["interarrival_time"])
+                sampled_interarrival = random.expovariate(1.0 / inter_time) 
+                # Some of the longer mean interarrival times will result in a >60 minute time, which will put the call
+                # into the next hour
+                if sampled_interarrival > 60:
+                    sampled_interarrival = 59
+                # print(f'Patient is {pt.id} and  Inter time is {inter_time} and sample interarrival is {sampled_interarrival}')
                 
                 # Freeze function until interarrival time has elapsed
                 yield self.env.timeout(sampled_interarrival)

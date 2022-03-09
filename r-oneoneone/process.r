@@ -18,7 +18,7 @@ df <- read_csv('../all_results.csv')
 start_dt = lubridate::ymd_hm("2022-01-31 09:00")
 
 
-event_log_df <- df %>%
+event_log_df <- df %>% filter(run_number == 5) %>%
   mutate(
     P_ID = as.character(P_ID),
     resource = NA,
