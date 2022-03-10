@@ -32,6 +32,8 @@ class HSM_Model:
         self.results_df["timestamp"]      = []
         self.results_df["status"]         = []
         self.results_df["instance_id"]    = []
+        self.results_df["day"]            = []
+        self.results_df["hour"]           = []
         self.results_df.set_index("P_ID", inplace=True)
         
         self.run_number = run_number
@@ -80,6 +82,9 @@ class HSM_Model:
                 
                 # Get current day of week and hour of day
                 [dow, hod] = self.date_time_of_call(self.env.now)
+                pt.day = dow
+                pt.hour = hod 
+                
                 inter_time = float(self.call_interarrival_times_lu.query("hour == @hod & day == @dow")["interarrival_time"])
                 sampled_interarrival = random.expovariate(1.0 / inter_time) 
                 # Some of the longer mean interarrival times will result in a >60 minute time, which will put the call
@@ -113,6 +118,8 @@ class HSM_Model:
                 "timestamp"   : self.env.now,         
                 "status"      : 'scheduled',
                 "instance_id" : instance_id,
+                "hour"        : patient.hour,
+                "day"         : patient.day
             }
 
             
@@ -164,6 +171,8 @@ class HSM_Model:
             "timestamp"   : self.env.now,         
             "status"      : 'start',
             "instance_id" : instance_id,
+            "hour"        : patient.hour,
+            "day"         : patient.day
         }
 
         if self.env.now > G.warm_up_duration:
@@ -178,6 +187,8 @@ class HSM_Model:
             "timestamp"   : self.env.now,         
             "status"      : 'completed',
             "instance_id" : instance_id,
+            "hour"        : patient.hour,
+            "day"         : patient.day
         }
         
         if self.env.now > G.warm_up_duration:
@@ -195,7 +206,9 @@ class HSM_Model:
                 "activity"        : [results["activity"]],
                 "timestamp"       : [results["timestamp"]],
                 "status"          : [results["status"]],
-                "instance_id"     : [results["instance_id"]]
+                "instance_id"     : [results["instance_id"]],
+                "hour"            : [results["hour"]],
+                "day"             : [results["day"]]
             }
         )
         

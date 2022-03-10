@@ -18,6 +18,9 @@ class Caller:
         
         # Keep track of cumulatative time and exit after 4320 minutes i.e. 72 hours
         self.time_since_call = 0
+        # Keep track of time and day caller made call to 111
+        self.hour = G.start_hour
+        self.day = G.start_day
         
         # Baulk rate? Perhaps based on 111 call abandonment
             
