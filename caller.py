@@ -21,6 +21,7 @@ class Caller:
         # Keep track of time and day caller made call to 111
         self.hour = G.start_hour
         self.day = G.start_day
+        self.weekday = "weekend" if G.start_day in ["Sat", "Sun"] else "weekday"
         
         # Baulk rate? Perhaps based on 111 call abandonment
             

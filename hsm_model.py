@@ -40,7 +40,7 @@ class HSM_Model:
         
         self.call_interarrival_times_lu = CallDispositions.call_arrivals
         
-    # Method to determine the current day and hour
+    # Method to determine the current day, hour and weekday/weekend
     # based on starting day/hour and elapsed sim time
     def date_time_of_call(self, elapsed_time):
         dow = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
@@ -62,8 +62,10 @@ class HSM_Model:
         elapsed_hours = floor(elapsed_time + (G.start_hour * 60)) % 24
         if elapsed_hours > 24:
             elapsed_hours = elapsed_hours - 24
+            
+        weekday = "weekend" if dow[elapsed_days] in ["Sat", "Sun"] else "weekday"
         
-        return [dow[elapsed_days], elapsed_hours]
+        return [dow[elapsed_days], elapsed_hours, weekday]
         
     def generate_111_calls(self):
         # Run generator until simulation ends
@@ -81,11 +83,12 @@ class HSM_Model:
                 self.env.process(self.patient_journey(pt))
                 
                 # Get current day of week and hour of day
-                [dow, hod] = self.date_time_of_call(self.env.now)
+                [dow, hod, weekday] = self.date_time_of_call(self.env.now)
                 pt.day = dow
                 pt.hour = hod 
+                pt.weekday = weekday
                 
-                inter_time = float(self.call_interarrival_times_lu.query("hour == @hod & day == @dow")["interarrival_time"])
+                inter_time = float(self.call_interarrival_times_lu.query("hour == @hod & weekday == @weekday")["interarrival_time"])
                 sampled_interarrival = random.expovariate(1.0 / inter_time) 
                 # Some of the longer mean interarrival times will result in a >60 minute time, which will put the call
                 # into the next hour

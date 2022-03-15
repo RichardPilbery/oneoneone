@@ -6,7 +6,7 @@ class G:
     
     sim_duration = 57600         # 96 hours 5760
     warm_up_duration = 1440     # 24 hours = 1440
-    number_of_runs = 50         # Number of runs
+    number_of_runs = 5         # Number of runs
     number_of_gp = 5
     number_of_ed = 5
     number_of_111 = 10

@@ -15,13 +15,15 @@ class CallDispositions:
 # Dx116	Speak to the Primary Care Service within 6 hours for Expected Death - Perhaps remove these?
 # Dx117	Speak to a Primary Care Service within 1 hour for Palliative Care - Perhaps remove these?
     hours_of_day = list(range(0,24))
-    dow = ["Mon", "Tue", "Wed","Thu","Fri","Sat","Sun"]
+    # dow = ["Mon", "Tue", "Wed","Thu","Fri","Sat","Sun"]
+    weekday = ["weekend", "weekday"]
     inter_arrival_csv = pd.read_csv("inter_arrival_times.csv")
 
     call_arrivals = pd.DataFrame(
         {
-            "hour"              : hours_of_day * 7,
-            "day"               : np.repeat(dow, 24),
+            "hour"              : hours_of_day * 2,
+            "weekday"           : np.repeat(weekday, 24),
             "interarrival_time" : inter_arrival_csv['mean_inter_arrival_time'].tolist()
         }
     )
+    
