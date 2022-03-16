@@ -17,8 +17,11 @@ df <- read_csv('../all_results.csv')
 
 start_dt = lubridate::ymd_hm("2022-01-31 09:00")
 
+df$activity <- ifelse(df$activity == "baulk", "exit", df$activity)
+  
 
-event_log_df <- df %>% filter(run_number == 5) %>%
+
+event_log_df <- df %>% filter(run_number == 0) %>%
   mutate(
     P_ID = as.character(P_ID),
     resource = NA,
@@ -37,6 +40,8 @@ event_log_df <- df %>% filter(run_number == 5) %>%
   )
 
 event_log_df %>% process_map()
+
+event_log_df %>% process_map(performance(median, "hours"))
 
 
 event_log_df %>%

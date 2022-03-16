@@ -4,13 +4,13 @@ class G:
     start_day = "Mon"
     start_hour = 9
     
-    sim_duration = 57600         # 96 hours 5760
-    warm_up_duration = 1440     # 24 hours = 1440
-    number_of_runs = 5         # Number of runs
-    number_of_gp = 5
-    number_of_ed = 5
-    number_of_111 = 10
-    number_of_999 = 6
+    sim_duration = 5760       # 96 hours 5760
+    warm_up_duration = 1440    # 24 hours = 1440
+    number_of_runs = 1         # Number of runs
+    number_of_gp = 2
+    number_of_ed = 2
+    number_of_111 = 5
+    number_of_999 = 3
     
     prob_callback = 0.5
     prob_male = 0.4
@@ -24,6 +24,7 @@ class G:
     ed_wait_time = 1440
     t1_wait_time = 360
     t9_wait_time = 1440
+    baulk_wait_time = 120
     
     gp_visit_time = 10
     ed_visit_time = 240

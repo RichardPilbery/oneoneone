@@ -1,7 +1,7 @@
 from math import floor
 import random
 from g import G
-
+from call_dispositions import CallDispositions
 # Class representing patients who have made a 111 call
 class Caller:
     def __init__(self, p_id, prob_male, prob_callback):
@@ -13,6 +13,10 @@ class Caller:
         self.prob_callback = prob_callback
         self.timer = 0
         self.activity = ''
+        self.gp = ""
+        # Choose the patient's initial 111 call disposition
+        # We can extend this to include symptom groups etc once we have this data
+        self.disposition = random.choices(CallDispositions.dx_codes.index, weights=CallDispositions.dx_codes["prob"])[0]
         
         self.priority = self.determine_priority()         # Priority of triage call
         
@@ -30,6 +34,5 @@ class Caller:
     def determine_priority(self):
         self.priority = random.randint(1,5)
     
-        
         
          

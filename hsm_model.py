@@ -21,6 +21,8 @@ class HSM_Model:
         self.Treble1 = simpy.PriorityResource(self.env, capacity=50)
         self.Treble9 = simpy.PriorityResource(self.env, capacity=10)
         
+        self.GP_surgery_df =  pd.read_csv("gp_surgeries.csv")
+        
         self.mean_q_time_speak_to_gp = 0
         self.mean_q_time_contact_gp = 0
         
@@ -34,6 +36,8 @@ class HSM_Model:
         self.results_df["instance_id"]    = []
         self.results_df["day"]            = []
         self.results_df["hour"]           = []
+        self.results_df["disposition"]    = []
+        self.results_df["GP"]             = []
         self.results_df.set_index("P_ID", inplace=True)
         
         self.run_number = run_number
@@ -80,6 +84,9 @@ class HSM_Model:
                 # Create a new caller
                 pt = Caller(self.patient_counter, G.prob_male, G.prob_callback)
                 
+                # Allocate them to a GP surgery
+                pt.gp = random.choices(self.GP_surgery_df["gp_surgery_id"], weights=self.GP_surgery_df["prob"])[0]
+                
                 self.env.process(self.patient_journey(pt))
                 
                 # Get current day of week and hour of day
@@ -104,8 +111,6 @@ class HSM_Model:
             
     def patient_journey(self, patient):
         # Record the time a patient waits to speak/contact GP
-        loop = 0
-        break_loop = 0
         instance_id = 0
         patient_enters_sim = self.env.now
     
@@ -122,12 +127,17 @@ class HSM_Model:
                 "status"      : 'scheduled',
                 "instance_id" : instance_id,
                 "hour"        : patient.hour,
-                "day"         : patient.day
+                "day"         : patient.day,
+                "disposition" : patient.disposition,
+                "GP"          : patient.gp,
             }
 
             
             if self.env.now > G.warm_up_duration:
                 self.store_patient_results(results)
+                
+            wait_time = self.wait_time(next_dest)
+            yield self.env.timeout(random.expovariate(1.0 / wait_time))
             
             if(next_dest == 'GP'):
                 #print(f'Patient {patient.id} is off to GP')
@@ -146,24 +156,40 @@ class HSM_Model:
                 with self.Treble9.request(priority=patient.priority) as req:
                     yield self.env.process(self.step_visit(patient, req, instance_id, '999'))
             elif(next_dest == 'baulk'):
-                break_loop = 1
                 break
             
             patient.timer = self.env.now - patient_enters_sim
                     
     def visit_time(self, visit_type):
+        # This can be customised once we have more detailed info
+        # perhaps add weekday/weekend and time of day
+        # plus priority of condition?
         
         visit_time_lookup = {
-            'GP': G.gp_visit_time,
-            'ED': G.ed_visit_time,
+            'GP' : G.gp_visit_time,
+            'ED' : G.ed_visit_time,
             '111': G.t1_visit_time,
             '999': G.t9_visit_time,
         }
         
         return visit_time_lookup[visit_type]
+    
+    def wait_time(self, wait_type):
+        # As for visit_time
+        
+        wait_time_lookup = {
+            'GP'   : G.gp_wait_time,
+            'ED'   : G.ed_wait_time,
+            '111'  : G.t1_wait_time,
+            '999'  : G.t9_wait_time,
+            'baulk': G.baulk_wait_time,
+        }
+        
+        return wait_time_lookup[wait_type]
 
 
     def step_visit(self, patient, yieldvalue, instance_id, visit_type):
+        
         visit_duration = self.visit_time(visit_type)
         # Wait time to access service
         yield yieldvalue
@@ -175,7 +201,9 @@ class HSM_Model:
             "status"      : 'start',
             "instance_id" : instance_id,
             "hour"        : patient.hour,
-            "day"         : patient.day
+            "day"         : patient.day,
+            "disposition" : patient.disposition,
+            "GP"          : patient.gp,
         }
 
         if self.env.now > G.warm_up_duration:
@@ -191,7 +219,9 @@ class HSM_Model:
             "status"      : 'completed',
             "instance_id" : instance_id,
             "hour"        : patient.hour,
-            "day"         : patient.day
+            "day"         : patient.day,
+            "disposition" : patient.disposition,
+            "GP"          : patient.gp,
         }
         
         if self.env.now > G.warm_up_duration:
@@ -211,7 +241,9 @@ class HSM_Model:
                 "status"          : [results["status"]],
                 "instance_id"     : [results["instance_id"]],
                 "hour"            : [results["hour"]],
-                "day"             : [results["day"]]
+                "day"             : [results["day"]],
+                "disposition"     : [results["disposition"]],
+                "GP"              : [results["GP"]]
             }
         )
         
