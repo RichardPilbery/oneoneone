@@ -1,15 +1,15 @@
 from math import floor
 import random
+import math
 from g import G
 from call_dispositions import CallDispositions
 # Class representing patients who have made a 111 call
 class Caller:
     def __init__(self, p_id, prob_male, prob_callback):
         self.id = p_id
-        self.age = 50
+        self.age = math.floor(random.betavariate(0.733, 2.82)*100)
         self.prob_male = prob_male
         self.sex = "male" if random.uniform(0, 1) < self.prob_male else "female" 
-        self.acu_patient = False
         self.prob_callback = prob_callback
         self.timer = 0
         self.activity = ''

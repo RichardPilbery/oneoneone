@@ -38,6 +38,8 @@ class HSM_Model:
         self.results_df["hour"]           = []
         self.results_df["disposition"]    = []
         self.results_df["GP"]             = []
+        self.results_df["age"]            = []
+        self.results_df["sex"]            = []
         self.results_df.set_index("P_ID", inplace=True)
         
         self.run_number = run_number
@@ -130,6 +132,8 @@ class HSM_Model:
                 "day"         : patient.day,
                 "disposition" : patient.disposition,
                 "GP"          : patient.gp,
+                "age"          : patient.age,
+                "sex"          : patient.sex,
             }
 
             
@@ -204,6 +208,8 @@ class HSM_Model:
             "day"         : patient.day,
             "disposition" : patient.disposition,
             "GP"          : patient.gp,
+            "age"          : patient.age,
+            "sex"          : patient.sex,
         }
 
         if self.env.now > G.warm_up_duration:
@@ -222,6 +228,8 @@ class HSM_Model:
             "day"         : patient.day,
             "disposition" : patient.disposition,
             "GP"          : patient.gp,
+            "age"          : patient.age,
+            "sex"          : patient.sex,
         }
         
         if self.env.now > G.warm_up_duration:
@@ -243,7 +251,9 @@ class HSM_Model:
                 "hour"            : [results["hour"]],
                 "day"             : [results["day"]],
                 "disposition"     : [results["disposition"]],
-                "GP"              : [results["GP"]]
+                "GP"              : [results["GP"]],
+                "age"             : [results["age"]],
+                "sex"             : [results["sex"]]
             }
         )
         
