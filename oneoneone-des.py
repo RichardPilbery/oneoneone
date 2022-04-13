@@ -7,9 +7,19 @@
 import csv
 import os
 import time
-from hsm_model import HSM_Model
 import multiprocessing as mp
+import sys
+
+try:
+     __file__
+except NameError: 
+    __file__ = sys.argv[0]
+
+# This script is being run by the R shiny server in another directory
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
+
 from g import G
+from hsm_model import HSM_Model
 
 if os.path.isfile(G.all_results_location):
     print('Deleting file')

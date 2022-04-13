@@ -1,6 +1,16 @@
 from math import floor
 import random
 import math
+import sys
+import os
+
+try:
+     __file__
+except NameError: 
+    __file__ = sys.argv[0]
+
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
+
 from g import G
 from call_dispositions import CallDispositions
 # Class representing patients who have made a 111 call

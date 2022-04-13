@@ -4,10 +4,19 @@ import simpy
 import csv
 import random
 import pandas as pd
-from caller import Caller
+from math import floor
+import sys
+
+try:
+     __file__
+except NameError: 
+    __file__ = sys.argv[0]
+
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
+
 from g import G
 from call_dispositions import CallDispositions
-from math import floor
+from caller import Caller
 
 # Health Care System model
 # as it relates to 111 patients

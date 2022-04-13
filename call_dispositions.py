@@ -1,5 +1,14 @@
 import pandas as pd
 import numpy as np
+import os
+import sys
+
+try:
+     __file__
+except NameError: 
+    __file__ = sys.argv[0]
+
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 class CallDispositions:
     
