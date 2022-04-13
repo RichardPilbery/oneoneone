@@ -4,9 +4,9 @@ class G:
     start_day = "Sun"
     start_hour = 9
     
-    sim_duration = 5760       # 96 hours 5760
+    sim_duration = 5760       # 96 hours 5760 31556952 seconds in a year.
     warm_up_duration = 1440    # 24 hours = 1440
-    number_of_runs = 2         # Number of runs
+    number_of_runs = 10         # Number of runs
     number_of_gp = 2
     number_of_ed = 2
     number_of_111 = 5
