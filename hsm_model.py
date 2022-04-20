@@ -13,6 +13,8 @@ except NameError:
     __file__ = sys.argv[0]
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+
 
 from g import G
 from call_dispositions import CallDispositions
