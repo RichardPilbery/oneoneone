@@ -1,8 +1,8 @@
 from dash import Dash, dcc, html, Input, Output, State
 import pandas as pd
 from oneoneonedes import parallelProcess
-
-parallelProcess(4)
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 app = Dash(__name__)
 server = app.server
