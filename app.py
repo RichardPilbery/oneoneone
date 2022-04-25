@@ -1,14 +1,12 @@
 from dash import Dash
 from dash import dcc
 from dash import html
-from oneoneonedes import *
 import pandas as pd
 
 data = pd.read_csv("avocado.csv")
 data = data.query("type == 'conventional' and region == 'Albany'")
 data["Date"] = pd.to_datetime(data["Date"], format="%Y-%m-%d")
 data.sort_values("Date", inplace=True)
-parallelProcess(4)
 
 app = Dash(__name__)
 
