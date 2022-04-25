@@ -44,9 +44,11 @@ pt_time_in_sim = G.sim_duration
 def runSim(run, total_runs):
     start = time.process_time()
     print (f"Run {run+1} of {total_runs}")
+    logging.debug(f"Run {run+1} of {total_runs}")
     my_111_model = HSM_Model(run)
     my_111_model.run()
     print(f'Run {run+1} took {time.process_time() - start} seconds to run')
+    logging.debug(f'Run {run+1} took {time.process_time() - start} seconds to run')
 
 def prepStartingVars(argv):
     logging.debug('Prepping starting vars')
@@ -92,7 +94,7 @@ nprocess = 10
     
 def parallelProcess(nprocess):
     logging.debug('Model called')
-    prepStartingVars(sys.argv)
+    # prepStartingVars(sys.argv)
     if os.path.isfile(G.all_results_location):
         print('Deleting file')
         os.remove(G.all_results_location)
