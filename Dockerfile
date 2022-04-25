@@ -4,8 +4,8 @@ RUN apt-get -y update
 RUN apt-get -y install git
 RUN git clone https://github.com/RichardPilbery/oneoneone.git
 
-RUN pip install -r ./oneoneone/requirements.txt
+RUN mv ./oneoneone/* ./*
 
-RUN cd ./oneoneone
+RUN pip install -r ./requirements.txt
 
 CMD gunicorn -b 0.0.0.0:80 oneoneone.app:server
