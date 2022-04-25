@@ -79,7 +79,7 @@ def prepStartingVars(argv):
             pt_time_in_sim = int(arg)
 
 
-nprocess = 10
+#nprocess = 10
 
 # if __name__ == '__main__':   
 #     logging.debug('Model called')

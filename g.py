@@ -6,7 +6,7 @@ class G:
     
     sim_duration = 5760       # 96 hours 5760 31556952 seconds in a year.
     warm_up_duration = 1440    # 24 hours = 1440
-    number_of_runs = 10         # Number of runs
+    number_of_runs = 4        # Number of runs
     number_of_gp = 2
     number_of_ed = 2
     number_of_111 = 5
