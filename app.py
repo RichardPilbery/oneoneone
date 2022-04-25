@@ -2,8 +2,15 @@ from dash import Dash
 from dash import dcc
 from dash import html
 import pandas as pd
+import sys
+import getopt
+import logging
+import os
 
-data = pd.read_csv("./avocado.csv")
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+
+data = pd.read_csv("/oneoneone/avocado.csv")
 data = data.query("type == 'conventional' and region == 'Albany'")
 data["Date"] = pd.to_datetime(data["Date"], format="%Y-%m-%d")
 data.sort_values("Date", inplace=True)
