@@ -1,52 +1,38 @@
-from dash import Dash
-from dash import dcc
-from dash import html
+from dash import Dash, dcc, html, Input, Output, State
 import pandas as pd
 from oneoneonedes import parallelProcess
 
-data = pd.read_csv("avocado.csv")
-data = data.query("type == 'conventional' and region == 'Albany'")
-data["Date"] = pd.to_datetime(data["Date"], format="%Y-%m-%d")
-data.sort_values("Date", inplace=True)
 parallelProcess(4)
 
 app = Dash(__name__)
 server = app.server
 
-app.layout = html.Div(
+app.layout = html.Div([
+    html.Div(
     children=[
-        html.H1(children="Avocado Analytics and stuff innit"),
+        html.H1(children="111 Discrete Event Simulation model"),
         html.P(
-            children="Analyze the behavior of avocado prices"
-            " and the number of avocados sold in the US"
-            " between 2015 and 2018",
+            children="Click on the button below to run the simulation",
         ),
-        dcc.Graph(
-            figure={
-                "data": [
-                    {
-                        "x": data["Date"],
-                        "y": data["AveragePrice"],
-                        "type": "lines",
-                    },
-                ],
-                "layout": {"title": "Average Price of Avocados"},
-            },
-        ),
-        dcc.Graph(
-            figure={
-                "data": [
-                    {
-                        "x": data["Date"],
-                        "y": data["Total Volume"],
-                        "type": "lines",
-                    },
-                ],
-                "layout": {"title": "Avocados Sold"},
-            },
-        ),
-    ]
+    ]),
+    html.Button('Submit', id='submit-val', n_clicks=0),
+    html.Div(id='container-button-basic', children='Enter a value and press submit')
+])
+
+@app.callback(
+    Output('container-button-basic', 'children'),
+    Input('submit-val', 'n_clicks'),
+    State('input-on-submit', 'value')
 )
+def update_output(n_clicks, value):
+    parallelProcess(4)
+    return 'The input value was "{}" and the button has been clicked {} times'.format(
+        value,
+        n_clicks
+    )
+
+
+
 
 if __name__ == "__main__":
     app.run_server(host="0.0.0.0", port=8080, debug=True)
