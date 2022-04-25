@@ -6,4 +6,6 @@ RUN git clone https://github.com/RichardPilbery/oneoneone.git
 
 RUN pip install -r ./oneoneone/requirements.txt
 
+RUN cd ./oneoneone
+
 CMD gunicorn -b 0.0.0.0:80 oneoneone.app:server
