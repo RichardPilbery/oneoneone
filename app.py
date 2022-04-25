@@ -2,11 +2,13 @@ from dash import Dash
 from dash import dcc
 from dash import html
 import pandas as pd
+from oneoneonedes import parallelProcess
 
 data = pd.read_csv("avocado.csv")
 data = data.query("type == 'conventional' and region == 'Albany'")
 data["Date"] = pd.to_datetime(data["Date"], format="%Y-%m-%d")
 data.sort_values("Date", inplace=True)
+parallelProcess(4)
 
 app = Dash(__name__)
 server = app.server
