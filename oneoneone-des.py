@@ -19,7 +19,6 @@ try:
 except NameError: 
     __file__ = sys.argv[0]
 
-# This script is being run by the R shiny server in another directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
@@ -80,7 +79,18 @@ def prepStartingVars(argv):
 
 nprocess = 10
 
-if __name__ == '__main__':   
+# if __name__ == '__main__':   
+#     logging.debug('Model called')
+#     prepStartingVars(sys.argv)
+#     if os.path.isfile(G.all_results_location):
+#         print('Deleting file')
+#         os.remove(G.all_results_location)
+#     pool = mp.Pool(processes=nprocess)
+#     pool.starmap(runSim, zip(list(range(0, number_of_runs)), [number_of_runs] * number_of_runs))
+#     logging.debug('Reached end of script')
+#     logging.shutdown()
+    
+def parallelProcess(nprocess):
     logging.debug('Model called')
     prepStartingVars(sys.argv)
     if os.path.isfile(G.all_results_location):
@@ -90,4 +100,3 @@ if __name__ == '__main__':
     pool.starmap(runSim, zip(list(range(0, number_of_runs)), [number_of_runs] * number_of_runs))
     logging.debug('Reached end of script')
     logging.shutdown()
-    
