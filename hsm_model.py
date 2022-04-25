@@ -6,6 +6,8 @@ import random
 import pandas as pd
 from math import floor
 import sys
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 try:
      __file__

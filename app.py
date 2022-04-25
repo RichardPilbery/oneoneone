@@ -24,7 +24,7 @@ app.layout = html.Div([
     Input('submit-val', 'n_clicks'),
     State('input-on-submit', 'value')
 )
-def update_output(n_clicks, value):
+def input_on_submit(n_clicks, value):
     parallelProcess(4)
     return 'The input value was "{}" and the button has been clicked {} times'.format(
         value,
