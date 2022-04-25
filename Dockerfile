@@ -8,6 +8,4 @@ RUN pip install -r requirements.txt
 
 RUN git clone https://github.com/RichardPilbery/oneoneone.git
 
-EXPOSE 8050
-
-RUN cd /oneoneone && python app.py
+CMD gunicorn -b 0.0.0.0:80 oneoneone.app:server
