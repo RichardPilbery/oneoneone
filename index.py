@@ -1,7 +1,6 @@
 from dash import Dash, dcc, html, Input, Output, State
 import dash_bootstrap_components as dbc
 import pandas as pd
-from oneoneonedes import parallelProcess
 from app import app, server
 from layouts import nav_bar, CONTENT_STYLE 
 from results import results
@@ -10,6 +9,7 @@ import callbacks
 
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
+app.config.suppress_callback_exceptions = True
 
 buttonClickCount = 0
 

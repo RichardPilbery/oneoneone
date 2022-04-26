@@ -1,10 +1,9 @@
 from dash import html, Input, Output
 from app import app
 import logging
+from oneoneonedes import parallelProcess, prepStartingVars
 
 buttonClickCount = 0
-
-logging.basicConfig(format='%(asctime)s %(message)s', filename='simconfig.log', encoding='utf-8', level=logging.DEBUG)
 
 # Sim configuration callback
 @app.callback(
@@ -23,4 +22,12 @@ def configSim(sim_duration, warm_up_time, number_of_runs, run_sim):
         logging.debug("Data submitted")
         logging.debug(output)
         buttonClickCount = run_sim
+
+        prepStartingVars(
+            number_of_runs = number_of_runs, 
+            warm_up_time = warm_up_time, 
+            sim_duration = sim_duration
+        )
+        parallelProcess()
+
         return html.P(output)

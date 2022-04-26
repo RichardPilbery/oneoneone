@@ -29,7 +29,7 @@ logging.basicConfig(format='%(asctime)s %(message)s', filename='model.log', enco
 
 number_of_runs = G.number_of_runs
 warm_up_time = G.warm_up_duration
-pt_time_in_sim = G.sim_duration
+sim_duration = G.sim_duration
 
 # Create a file to store trial results
 # with open("trial_111_results.csv", "w", newline='') as f:
@@ -50,34 +50,49 @@ def runSim(run, total_runs):
     print(f'Run {run+1} took {time.process_time() - start} seconds to run')
     logging.debug(f'Run {run+1} took {time.process_time() - start} seconds to run')
 
-def prepStartingVars(argv):
+# def prepStartingVars(argv):
+#     logging.debug('Prepping starting vars')
+#     # Update global variables, not create local version with same name
+#     global number_of_runs
+#     global warm_up_time
+#     global pt_time_in_sim
+#     # Stolen from: https://opensourceoptions.com/blog/how-to-pass-arguments-to-a-python-script-from-the-command-line/
+    
+#     arg_help = "{0} -n <num_runs> -w <warm_up_time> -p <pt_time_in_sim>".format(argv[0])
+#     try:
+#         opts, args = getopt.getopt(argv[1:], "h:n:w:p:", ["help", "num_runs=", 
+#         "warm_up_time=", "pt_time_in_sim="])
+#     except:
+#         print(arg_help)
+#         sys.exit(2)
+    
+#     for opt, arg in opts:
+#         if opt in ("-h", "--help"):
+#             print(arg_help)  # print the help message
+#             sys.exit(2)
+#         elif opt in ("-n", "--num_runs"):
+#             print(f'Number of runs: {arg}')
+#             number_of_runs = int(arg)
+#         elif opt in ("-w", "--warm_up_time"):
+#             warm_up_time = int(arg)
+#         elif opt in ("-p", "--pt_time_in_sim"):
+#             pt_time_in_sim = int(arg)
+
+
+def prepStartingVars(**kwargs):
     logging.debug('Prepping starting vars')
     # Update global variables, not create local version with same name
     global number_of_runs
     global warm_up_time
-    global pt_time_in_sim
-    # Stolen from: https://opensourceoptions.com/blog/how-to-pass-arguments-to-a-python-script-from-the-command-line/
-    
-    arg_help = "{0} -n <num_runs> -w <warm_up_time> -p <pt_time_in_sim>".format(argv[0])
-    try:
-        opts, args = getopt.getopt(argv[1:], "h:n:w:p:", ["help", "num_runs=", 
-        "warm_up_time=", "pt_time_in_sim="])
-    except:
-        print(arg_help)
-        sys.exit(2)
-    
-    for opt, arg in opts:
-        if opt in ("-h", "--help"):
-            print(arg_help)  # print the help message
-            sys.exit(2)
-        elif opt in ("-n", "--num_runs"):
-            print(f'Number of runs: {arg}')
-            number_of_runs = int(arg)
-        elif opt in ("-w", "--warm_up_time"):
-            warm_up_time = int(arg)
-        elif opt in ("-p", "--pt_time_in_sim"):
-            pt_time_in_sim = int(arg)
+    global sim_duration
 
+    for k,v in kwargs.iteritems():
+        if k == "number_of_runs":
+            number_of_runs = v
+        elif k == "warm_up_time":
+            warm_up_time = v
+        elif k == "sim_duration":
+            sim_duration = v
 
 #nprocess = 10
 
@@ -94,7 +109,7 @@ def prepStartingVars(argv):
     
 def parallelProcess(nprocess = mp.cpu_count() - 1):
     logging.debug('Model called')
-    # prepStartingVars(sys.argv)
+    #prepStartingVars()
     if os.path.isfile(G.all_results_location):
         print('Deleting file')
         os.remove(G.all_results_location)
