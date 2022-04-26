@@ -1,5 +1,6 @@
 from dash import dcc, html, Input, Output
 import dash_bootstrap_components as dbc
+from app import app
 
 
 ### Layout 1
