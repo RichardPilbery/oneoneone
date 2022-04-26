@@ -34,7 +34,7 @@ def nav_bar():
         html.Hr(),
         dbc.Nav(
             [
-                dbc.NavLink("Homepage", href="/home",active="exact", external_link=True),
+                dbc.NavLink("Start", href="/home",active="exact", external_link=True),
                 dbc.NavLink("Results", href="/results", active="exact", external_link=True)
             ],
             pills=True,

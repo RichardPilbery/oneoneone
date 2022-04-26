@@ -92,13 +92,13 @@ def prepStartingVars(argv):
 #     logging.debug('Reached end of script')
 #     logging.shutdown()
     
-def parallelProcess(nprocess):
+def parallelProcess(nprocess = mp.cpu_count() - 1):
     logging.debug('Model called')
     # prepStartingVars(sys.argv)
     if os.path.isfile(G.all_results_location):
         print('Deleting file')
         os.remove(G.all_results_location)
-    pool = mp.Pool(processes=nprocess)
+    pool = mp.Pool(processes = nprocess)
     pool.starmap(runSim, zip(list(range(0, number_of_runs)), [number_of_runs] * number_of_runs))
     logging.debug('Reached end of script')
     logging.shutdown()

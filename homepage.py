@@ -26,7 +26,14 @@ home = html.Div([
                 dbc.Col(
                     [
                         html.H4('Additional Components here'),
-                        html.P('Click on graph to display text', id='graph-text')
+                        html.P('Click on graph to display text', id='graph-text'),
+                        dcc.Slider(
+                            1440,
+                            5760,
+                            step=8,
+                            value=5760,
+                            id='sim_duration'
+                        )
                     ],
                     width=6 #half page
                 )
