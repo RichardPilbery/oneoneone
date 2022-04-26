@@ -25,15 +25,48 @@ home = html.Div([
                 
                 dbc.Col(
                     [
-                        html.H4('Additional Components here'),
-                        html.P('Click on graph to display text', id='graph-text'),
+                        html.H4('Configure simulation'),
+
+                        html.P('Sim duration in hours', id='sim_duration_label'),
                         dcc.Slider(
-                            24,
-                            96,
-                            step=8,
-                            value=96,
-                            id='sim_duration'
-                        )
+                            2880,
+                            5760,
+                            step=24,
+                            value=5760,
+                            marks=None,
+                            id='sim_duration',
+                            tooltip={"placement": "bottom", "always_visible": True}
+                        ),
+
+                        html.P('Warm up duration', id='warm_up_duration_label'),
+                        dcc.Slider(
+                            0,
+                            1440,
+                            step=24,
+                            value=1440,
+                            marks=None,
+                            id='warm_up_time',
+                            tooltip={"placement": "bottom", "always_visible": True}
+                        ),
+
+                        html.P('Number of runs', id='number_of_runs_label'),
+                        dcc.Slider(
+                            0,
+                            10,
+                            step=1,
+                            value=3,
+                            marks=None,
+                            id='number_of_runs',
+                            tooltip={"placement": "bottom", "always_visible": True}
+                        ),
+
+                        dbc.Button(
+                            "Run Simulation", id="run_sim", className="me-2", outline=True, color="primary",
+                            n_clicks = 0
+                        ),
+
+                        html.P(id="config"),
+
                     ],
                     width=6 #half page
                 )

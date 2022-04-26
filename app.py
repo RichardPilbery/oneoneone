@@ -13,6 +13,8 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
+buttonClickCount = 0
+
 # Define basic structure of app:
 # A horizontal navigation bar on the left side with page content on the right.
 app.layout = html.Div([
@@ -35,6 +37,22 @@ def display_page(pathname):
     else:
         return '404' #If page not found return 404
 
+
+
+@app.callback(
+    Output('config', 'children'),
+    [Input('sim_duration', 'value'),
+    Input('warm_up_time', 'value'),
+    Input('number_of_runs', 'value'),
+    Input('run_sim', 'n_clicks')]
+)
+def configSim(sim_duration, warm_up_time, number_of_runs, run_sim):
+    global buttonClickCount
+
+    if(run_sim > buttonClickCount):
+        # Run the sim
+        buttonClickCount == run_sim
+        return f"Sim duration: {sim_duration}<br/>Warm-up time: {warm_up_time}</br>Number of runs: {number_of_runs}"
 
 if __name__ == "__main__":
     app.run_server(host="0.0.0.0", port=8080, debug=True)
