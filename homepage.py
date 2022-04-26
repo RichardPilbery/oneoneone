@@ -51,7 +51,7 @@ home = html.Div([
 
                         html.P('Number of runs', id='number_of_runs_label'),
                         dcc.Slider(
-                            0,
+                            1,
                             10,
                             step=1,
                             value=3,

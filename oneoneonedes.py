@@ -86,7 +86,7 @@ def prepStartingVars(**kwargs):
     global warm_up_time
     global sim_duration
 
-    for k,v in kwargs.iteritems():
+    for k,v in kwargs.items():
         if k == "number_of_runs":
             number_of_runs = v
         elif k == "warm_up_time":
