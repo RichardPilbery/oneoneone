@@ -3,7 +3,9 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 from oneoneonedes import parallelProcess
 #import your navigation, styles and layouts from layouts.py here
-from layouts import nav_bar, layout1, layout2, CONTENT_STYLE 
+from layouts import nav_bar, CONTENT_STYLE 
+import results
+import homepage
 
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
@@ -25,11 +27,11 @@ app.layout = html.Div([
               [Input('url', 'pathname')]) #this listens for the url in use
 def display_page(pathname):
     if pathname == '/':
-        return layout1
-    elif pathname == '/page1':
-        return layout1
-    elif pathname == '/page2':
-         return layout2
+        return homepage
+    elif pathname == '/home':
+        return homepage
+    elif pathname == '/results':
+         return results
     else:
         return '404' #If page not found return 404
 
