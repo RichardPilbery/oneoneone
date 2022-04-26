@@ -28,10 +28,10 @@ home = html.Div([
                         html.H4('Additional Components here'),
                         html.P('Click on graph to display text', id='graph-text'),
                         dcc.Slider(
-                            1440,
-                            5760,
+                            24,
+                            96,
                             step=8,
-                            value=5760,
+                            value=96,
                             id='sim_duration'
                         )
                     ],
