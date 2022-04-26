@@ -10,4 +10,4 @@ RUN cp -a oneoneone/. . && rm -r oneoneone
 
 RUN pip install -r ./requirements.txt
 
-CMD gunicorn -b 0.0.0.0:80 app:server
+CMD gunicorn -b 0.0.0.0:80 index:server

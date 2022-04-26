@@ -6,6 +6,7 @@ from app import app, server
 from layouts import nav_bar, CONTENT_STYLE 
 from results import results
 from homepage import home
+import callbacks
 
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
