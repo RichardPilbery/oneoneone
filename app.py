@@ -2,7 +2,6 @@ from dash import Dash, dcc, html, Input, Output, State
 import dash_bootstrap_components as dbc
 import pandas as pd
 from oneoneonedes import parallelProcess
-from app import app, server 
 #import your navigation, styles and layouts from layouts.py here
 from layouts import nav_bar, layout1, layout2, CONTENT_STYLE 
 
