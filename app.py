@@ -4,8 +4,8 @@ import pandas as pd
 from oneoneonedes import parallelProcess
 #import your navigation, styles and layouts from layouts.py here
 from layouts import nav_bar, CONTENT_STYLE 
-import results
-import homepage
+from results import results
+from homepage import home
 
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
@@ -27,9 +27,9 @@ app.layout = html.Div([
               [Input('url', 'pathname')]) #this listens for the url in use
 def display_page(pathname):
     if pathname == '/':
-        return homepage
+        return home
     elif pathname == '/home':
-        return homepage
+        return home
     elif pathname == '/results':
          return results
     else:
