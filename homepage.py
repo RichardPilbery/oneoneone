@@ -77,7 +77,6 @@ home = html.Div([
                                     id="sim_running",
                                     color="primary",
                                     disabled=True,
-                                    show_initially=False
                                 ),
                             ],
                             style = {'display':'none'}
