@@ -1,4 +1,4 @@
-from dash import html, Input, Output, DashLogger
+from dash import html, Input, Output
 from app import app
 import logging
 
@@ -14,7 +14,7 @@ logging.basicConfig(format='%(asctime)s %(message)s', filename='simconfig.log', 
     Input('number_of_runs', 'value'),
     Input('run_sim', 'n_clicks')
 )
-def configSim(sim_duration, warm_up_time, number_of_runs, run_sim, logger: DashLogger):
+def configSim(sim_duration, warm_up_time, number_of_runs, run_sim):
     global buttonClickCount
 
     if(run_sim > buttonClickCount):
