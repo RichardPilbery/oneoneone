@@ -65,7 +65,7 @@ home = html.Div([
                             n_clicks = 0
                         ),
 
-                        html.P(id="config"),
+                        html.Div(id="config"),
 
                     ],
                     width=6 #half page

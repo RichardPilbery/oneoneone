@@ -52,7 +52,7 @@ def configSim(sim_duration, warm_up_time, number_of_runs, run_sim):
     if(run_sim > buttonClickCount):
         # Run the sim
         buttonClickCount == run_sim
-        return f"Sim duration: {sim_duration}<br/>Warm-up time: {warm_up_time}</br>Number of runs: {number_of_runs}"
+        return html.P(f"Sim duration: {sim_duration}<br/>Warm-up time: {warm_up_time}</br>Number of runs: {number_of_runs}")
 
 if __name__ == "__main__":
     app.run_server(host="0.0.0.0", port=8080, debug=True)
