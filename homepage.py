@@ -59,13 +59,30 @@ home = html.Div([
                             id='number_of_runs',
                             tooltip={"placement": "bottom", "always_visible": True}
                         ),
-
-                        dbc.Button(
-                            "Run Simulation", id="run_sim", className="me-2", outline=True, color="primary",
-                            n_clicks = 0
+                        html.Div(
+                            id="submit_button",
+                            children=[
+                                dbc.Button(
+                                    "Run Simulation", id="run_sim", className="me-2", outline=True, color="primary",
+                                    n_clicks = 0,
+                                ),
+                            ],
+                            style = {'display':'block'}
+                        ),
+                        html.Div(
+                            id="sim_run_button",
+                            children=[
+                                dbc.Button(
+                                    [dbc.Spinner(size="sm"), " Loading..."],
+                                    id="sim_running",
+                                    color="primary",
+                                    disabled=True,
+                                    show_initially=False
+                                ),
+                            ],
+                            style = {'display':'none'}
                         ),
 
-                        html.Div(id="config"),
 
                     ],
                     width=6 #half page

@@ -7,7 +7,8 @@ buttonClickCount = 0
 
 # Sim configuration callback
 @app.callback(
-    Output('config', 'children'),
+    Output('submit_button', 'style'),
+    Output('sim_run_button', 'style'),
     Input('sim_duration', 'value'),
     Input('warm_up_time', 'value'),
     Input('number_of_runs', 'value'),
@@ -30,4 +31,17 @@ def configSim(sim_duration, warm_up_time, number_of_runs, run_sim):
         )
         parallelProcess()
 
-        return html.P(output)
+        return {'display:block'}, {'display':'none'}
+
+
+@app.callback(
+    Output('submit_button', 'style'),
+    Output('sim_run_button', 'style'),
+    Input('run_sim', 'n_clicks')
+)
+def configSim(run_sim):
+
+    return  {'display':'none'}, {'display:block'}
+
+
+
