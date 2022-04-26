@@ -1,6 +1,5 @@
 from dash import dcc, html, Input, Output
 from layouts import example_graph1, example_graph2
-from app import app
 
 @app.callback(
     Output("tab-content", "children"),
