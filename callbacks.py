@@ -23,6 +23,7 @@ def runSimulation(sim_running, sim_complete):
     elif sim_running == 1 and sim_complete == 0:
         return 1
     elif sim_running == 1 and sim_complete == 1:
+        logging.debug('Togglebutton is set to zero')
         return 0
 
 
