@@ -8,7 +8,7 @@ buttonClickCount = 0
 
 # Sim configuration callback
 @app.callback(
-    Output('status_message', 'value'),
+    Output('sim_complete', 'value'),
     Input('sim_duration', 'value'),
     Input('warm_up_time', 'value'),
     Input('number_of_runs', 'value'),
@@ -28,21 +28,23 @@ def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
         )
         parallelProcess()
 
-        return "Simulation has run"
+        return 1
     else:
-        return ""
+        return 0
 
 
 @app.callback(
     Output('submit_button', 'style'),
     Output('sim_run_button', 'style'),
     Output('trigger_sim', 'value'),
-    Input('run_sim', 'n_clicks')
+    Input('run_sim', 'n_clicks'),
+    Input('sim_complete', 'value')
 )
-def buttonToggle(run_sim):
+def buttonToggle(run_sim, sim_complete):
     global buttonClickCount
 
-    logging.debug(f"Button clicked and run_sim is {run_sim} and buttonClickCount is {buttonClickCount}")
+    logging.debug(f"Button clicked and run_sim is {run_sim} and buttonClickCount is {buttonClickCount} and statusMessage is {sim_complete}")
+
     if run_sim > buttonClickCount:
         buttonClickCount = run_sim
         return  HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE, 1
