@@ -40,7 +40,7 @@ def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
 def runSimulation(run_sim):
     global buttonClickCount
 
-    logging.debug(f"Button clicked and run_sim is {run_sim} and buttonClickCount is {buttonClickCount} and statusMessage is {sim_complete}")
+    logging.debug(f"Button clicked and run_sim is {run_sim} and buttonClickCount is {buttonClickCount}")
 
     if run_sim > buttonClickCount:
         buttonClickCount = run_sim
