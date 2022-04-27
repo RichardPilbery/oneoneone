@@ -25,7 +25,7 @@ SHOW_BUTTON_STYLE = {
 }
 
 HIDE_BUTTON_STYLE = {
-    "display": "block"
+    "display": "none"
 }
 
 #####################################
