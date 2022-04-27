@@ -83,9 +83,15 @@ home = html.Div([
                         ),
 
                         html.Div(
-                            id="sim_run_button",
+                            id="sim_block",
                             children=[
-                                html.H4(id="status_message")
+                                html.H4(id="status_message"),
+                                dcc.Input(
+                                    id="trigger_sim", 
+                                    type="hidden", 
+                                    value=0,
+                                    hidden=True
+                                )
                             ],
                             style = {'display':'block'}
                         ),
