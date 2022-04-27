@@ -20,6 +20,14 @@ CONTENT_STYLE = {
     "margin-right": "2rem",
 }
 
+SHOW_BUTTON_STYLE = {
+    "display": "block"
+}
+
+HIDE_BUTTON_STYLE = {
+    "display": "block"
+}
+
 #####################################
 # Create Auxiliary Components Here
 #####################################

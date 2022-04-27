@@ -1,5 +1,6 @@
 from dash import dcc, html 
 import dash_bootstrap_components as dbc
+from layouts import SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE
 
 
 ### Layout 1
@@ -67,7 +68,7 @@ home = html.Div([
                                     n_clicks = 0,
                                 ),
                             ],
-                            style = {'display':'block'}
+                            style = SHOW_BUTTON_STYLE
                         ),
                         html.Div(
                             id="sim_run_button",
@@ -79,7 +80,7 @@ home = html.Div([
                                     disabled=True,
                                 ),
                             ],
-                            style = {'display':'none'}
+                            style = HIDE_BUTTON_STYLE
                         ),
 
                         html.Div(

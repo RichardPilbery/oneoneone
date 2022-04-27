@@ -1,5 +1,6 @@
 from dash import html, Input, Output
 from app import app
+from layouts import SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE
 import logging
 from oneoneonedes import parallelProcess, prepStartingVars
 
@@ -44,8 +45,8 @@ def buttonToggle(run_sim):
     logging.debug(f"Button clicked and run_sim is {run_sim} and buttonClickCount is {buttonClickCount}")
     if run_sim > buttonClickCount:
         buttonClickCount = run_sim
-        return  [{'display':'none'}, {'display:block'}, 1]
+        return  HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE, 1
     else:
-        return  [{'display':'block'}, {'display:none'}, 0]
+        return  SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE, 0
 
 
