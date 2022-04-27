@@ -19,9 +19,11 @@ def runSimulation(run_sim):
     logging.debug(f"Button clicked and run_sim is {run_sim} and buttonClickCount is {buttonClickCount}")
 
     if run_sim > buttonClickCount:
+        logging.debug('Setting trigger sim to 1')
         buttonClickCount = run_sim
         return  1
     else:
+        logging.debug('Setting trigger sim to 0')
         return  0
 
 
