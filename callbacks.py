@@ -38,9 +38,9 @@ def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
     Output('sim_run_button', 'style'),
     Output('trigger_sim', 'value'),
     Input('run_sim', 'n_clicks'),
-    Input('sim_complete', 'value')
+
 )
-def buttonToggle(run_sim, sim_complete):
+def runSimulation(run_sim, sim_complete):
     global buttonClickCount
 
     logging.debug(f"Button clicked and run_sim is {run_sim} and buttonClickCount is {buttonClickCount} and statusMessage is {sim_complete}")
@@ -49,6 +49,18 @@ def buttonToggle(run_sim, sim_complete):
         buttonClickCount = run_sim
         return  HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE, 1
     else:
+        return  None, None, None
+
+
+@app.callback(
+    Output('submit_button', 'style'),
+    Output('sim_run_button', 'style'),
+    Output('trigger_sim', 'value'),
+    Input('sim_complete', 'value')
+)
+def resetButtons(sim_complete):
+    if sim_complete == 1:
+        loggin.debug('Sim is complete')
         return  SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE, 0
-
-
+    else:
+        return None, None, None
