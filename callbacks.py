@@ -6,7 +6,29 @@ from oneoneonedes import parallelProcess, prepStartingVars
 
 buttonClickCount = 0
 
-# Sim configuration callback
+
+# 1. User clicks 'Run Simulation button'
+# Callback updates trigger_sim value
+@app.callback(
+    Output('trigger_sim', 'value'),
+    Input('run_sim', 'n_clicks'),
+)
+def runSimulation(run_sim):
+    global buttonClickCount
+
+    logging.debug(f"Button clicked and run_sim is {run_sim} and buttonClickCount is {buttonClickCount}")
+
+    if run_sim > buttonClickCount:
+        buttonClickCount = run_sim
+        return  1
+    else:
+        return  0
+
+
+
+
+# 2. When trigger sim is set to value = 1, then simulation will run
+# When it has finished, sim_complete is set to 1
 @app.callback(
     Output('sim_complete', 'value'),
     Input('sim_duration', 'value'),
@@ -33,29 +55,16 @@ def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
         return 0
 
 
-@app.callback(
-    Output('trigger_sim', 'value'),
-    Input('run_sim', 'n_clicks'),
-)
-def runSimulation(run_sim):
-    global buttonClickCount
 
-    logging.debug(f"Button clicked and run_sim is {run_sim} and buttonClickCount is {buttonClickCount}")
-
-    if run_sim > buttonClickCount:
-        buttonClickCount = run_sim
-        return  1
-    else:
-        return  0
-
-
+# 3. This will run and control button visibility when either 
+# trigger_sim or sim_complete values are changed
 @app.callback(
     Output('submit_button', 'style'),
     Output('sim_run_button', 'style'),
     Input('trigger_sim', 'value'),
     Input('sim_complete', 'value')
 )
-def resetButtons(sim_complete, trigger_sim):
+def resetButtons(trigger_sim):
     if trigger_sim == 1:
         return HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE
     else:
