@@ -64,7 +64,8 @@ def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
     Input('trigger_sim', 'value'),
     Input('sim_complete', 'value')
 )
-def resetButtons(trigger_sim):
+def resetButtons(trigger_sim, sim_complete):
+    logging.debug(f"Trigger sim is {trigger_sim} and Sim complete is {sim_complete}")
     if trigger_sim == 1:
         return HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE
     else:
