@@ -27,9 +27,25 @@ def runSimulation(run_sim):
         return  0
 
 
+# 2. This will run and control button visibility when either 
+# trigger_sim or sim_complete values are changed
+@app.callback(
+    Output('submit_button', 'style'),
+    Output('sim_run_button', 'style'),
+    Input('trigger_sim', 'value'),
+    Input('sim_complete', 'value')
+)
+def resetButtons(trigger_sim, sim_complete):
+    logging.debug(f"Trigger sim is {trigger_sim} and Sim complete is {sim_complete}")
+    if trigger_sim == 1 and sim_complete == 0:
+        logging.debug('Sim is running but is not complete')
+        return HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE
+    else:
+        logging.debug('Default position')
+        return  SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE
 
 
-# 2. When trigger sim is set to value = 1, then simulation will run
+# 3. When trigger sim is set to value = 1, then simulation will run
 # When it has finished, sim_complete is set to 1
 @app.callback(
     Output('sim_complete', 'value'),
@@ -56,21 +72,3 @@ def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
     else:
         return 0
 
-
-
-# 3. This will run and control button visibility when either 
-# trigger_sim or sim_complete values are changed
-@app.callback(
-    Output('submit_button', 'style'),
-    Output('sim_run_button', 'style'),
-    Input('trigger_sim', 'value'),
-    Input('sim_complete', 'value')
-)
-def resetButtons(trigger_sim, sim_complete):
-    logging.debug(f"Trigger sim is {trigger_sim} and Sim complete is {sim_complete}")
-    if trigger_sim == 1 and sim_complete == 0:
-        logging.debug('Sim is running but is not complete')
-        return HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE
-    else:
-        logging.debug('Default position')
-        return  SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE
