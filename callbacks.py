@@ -37,7 +37,7 @@ def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
     Output('trigger_sim', 'value'),
     Input('run_sim', 'n_clicks'),
 )
-def runSimulation(run_sim, sim_complete):
+def runSimulation(run_sim):
     global buttonClickCount
 
     logging.debug(f"Button clicked and run_sim is {run_sim} and buttonClickCount is {buttonClickCount} and statusMessage is {sim_complete}")
