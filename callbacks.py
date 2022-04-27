@@ -1,6 +1,5 @@
 from dash import html, Input, Output, State
-from dash.long_callback import DiskcacheLongCallbackManager
-from app import app
+from app import app, long_callback_manager
 from layouts import SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE
 import logging
 from oneoneonedes import parallelProcess, prepStartingVars
@@ -21,7 +20,8 @@ from oneoneonedes import parallelProcess, prepStartingVars
         (Output('submit_button', 'style'), HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE),
         (Output('sim_run_button', 'style'), SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE),
     ],
-    prevent_initial_call=True
+    manager = long_callback_manager,
+    prevent_initial_call = True
 )
 def configSim(run_sim, sim_duration, warm_up_time, number_of_runs):
         # Run the sim
