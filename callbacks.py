@@ -14,8 +14,6 @@ buttonClickCount = 0
     Input('trigger_sim', 'value')
 )
 def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
-    
-
     if trigger_sim == 1:
         # Run the sim
         output = f"Sim duration: {sim_duration}; Warm-up time: {warm_up_time}; Number of runs: {number_of_runs}"
@@ -30,6 +28,8 @@ def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
         parallelProcess()
 
         return "Simulation has run"
+    else:
+        return ""
 
 
 @app.callback(
@@ -38,7 +38,7 @@ def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
     Output('trigger_sim', 'value'),
     Input('run_sim', 'n_clicks')
 )
-def configSim(submit_button, sim_run_button, trigger_sim, run_sim):
+def buttonToggle(run_sim):
     global buttonClickCount
 
     if run_sim > buttonClickCount:
