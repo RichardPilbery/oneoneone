@@ -7,23 +7,21 @@ buttonClickCount = 0
 
 # Sim configuration callback
 @app.callback(
-    Output('submit_button', 'style'),
-    Output('sim_run_button', 'style'),
+    Output('status_message', 'value'),
     Input('sim_duration', 'value'),
     Input('warm_up_time', 'value'),
     Input('number_of_runs', 'value'),
-    Input('run_sim', 'n_clicks')
+    Input('trigger_sim', 'value')
 )
-def configSim(sim_duration, warm_up_time, number_of_runs, run_sim):
-    global buttonClickCount
+def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
+    
 
-    if(run_sim > buttonClickCount):
+    if trigger_sim == 1:
         # Run the sim
-        output = f"Sim duration: {sim_duration}<br/>Warm-up time: {warm_up_time}</br>Number of runs: {number_of_runs}"
+        output = f"Sim duration: {sim_duration}; Warm-up time: {warm_up_time}; Number of runs: {number_of_runs}"
         logging.debug("Data submitted")
         logging.debug(output)
-        buttonClickCount = run_sim
-
+        
         prepStartingVars(
             number_of_runs = number_of_runs, 
             warm_up_time = warm_up_time, 
@@ -31,17 +29,22 @@ def configSim(sim_duration, warm_up_time, number_of_runs, run_sim):
         )
         parallelProcess()
 
-        return {'display:block'}, {'display':'none'}
+        return "Simulation has run"
 
 
 @app.callback(
     Output('submit_button', 'style'),
     Output('sim_run_button', 'style'),
+    Output('trigger_sim', 'value'),
     Input('run_sim', 'n_clicks')
 )
-def configSim(run_sim):
+def configSim(submit_button, sim_run_button, trigger_sim, run_sim):
+    global buttonClickCount
 
-    return  {'display':'none'}, {'display:block'}
-
+    if run_sim > buttonClickCount:
+        buttonClickCount = run_sim
+        return  {'display':'none'}, {'display:block'}, 1
+    else:
+        return  {'display':'block'}, {'display:none'}, 0
 
 

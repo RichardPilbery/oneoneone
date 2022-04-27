@@ -82,6 +82,14 @@ home = html.Div([
                             style = {'display':'none'}
                         ),
 
+                        html.Div(
+                            id="sim_run_button",
+                            children=[
+                                html.H4(id="status_message")
+                            ],
+                            style = {'display':'block'}
+                        ),
+
 
                     ],
                     width=6 #half page
