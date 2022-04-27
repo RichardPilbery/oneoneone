@@ -36,8 +36,11 @@ def runSimulation(sim_running, sim_complete):
     Input('toggle_button', 'value')
 )
 def clickButton(run_sim, toggle_button):
-    if run_sim or toggle_button == 1:
+    global buttonClickCount
+
+    if run_sim > buttonClickCount or toggle_button == 1:
         logging.debug('Button click, time to hide')
+        buttonClickCount == run_sim
         return HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE, 1
     else:
         logging.debug('Back to normal button behaviour')
