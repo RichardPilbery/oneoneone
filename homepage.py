@@ -87,14 +87,19 @@ home = html.Div([
                             id="sim_block",
                             children=[
                                 dcc.Input(
-                                    id="trigger_sim", 
+                                    id="sim_running", 
                                     type="hidden", 
                                     value=0,
                                 ),
                                 dcc.Input(
                                     id="sim_complete", 
                                     type="hidden", 
-                                    value=1,
+                                    value=0,
+                                ),
+                                dcc.Input(
+                                    id="toggle_button", 
+                                    type="hidden", 
+                                    value=0,
                                 )
                             ],
                             style = {'display':'none'}

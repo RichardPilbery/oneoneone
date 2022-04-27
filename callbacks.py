@@ -10,21 +10,20 @@ buttonClickCount = 0
 # 1. User clicks 'Run Simulation button'
 # Callback updates trigger_sim value
 @app.callback(
-    Output('trigger_sim', 'value'),
-    Input('run_sim', 'n_clicks'),
+    Output('toggle_button', 'value'),
+    Input('sim_running', 'value'),
+    Input('sim_complete', 'value'),
 )
-def runSimulation(run_sim):
-    global buttonClickCount
+def runSimulation(sim_running, sim_complete):
 
-    logging.debug(f"Button clicked and run_sim is {run_sim} and buttonClickCount is {buttonClickCount}")
+    logging.debug(f"Button clicked and sim_running is {sim_running} and sim_complete is {sim_complete}")
 
-    if run_sim > buttonClickCount:
-        logging.debug('Setting trigger sim to 1')
-        buttonClickCount = run_sim
-        return  1
-    else:
-        logging.debug('Setting trigger sim to 0')
-        return  0
+    if sim_running == 0 and sim_complete == 0:
+        return 0
+    elif sim_running == 1 and sim_complete == 0:
+        return 1
+    elif sim_running == 0 and sim_complete == 1:
+        return 1
 
 
 # 2. This will run and control button visibility when either 
@@ -32,17 +31,17 @@ def runSimulation(run_sim):
 @app.callback(
     Output('submit_button', 'style'),
     Output('sim_run_button', 'style'),
-    Input('trigger_sim', 'value'),
-    Input('sim_complete', 'value')
+    Output('sim_running', 'value'),
+    Input('run_sim', 'n_clicks'),
+    Input('toggle_button', 'value')
 )
-def resetButtons(trigger_sim, sim_complete):
-    logging.debug(f"Trigger sim is {trigger_sim} and Sim complete is {sim_complete}")
-    if trigger_sim == 1 and sim_complete == 0:
-        logging.debug('Sim is running but is not complete')
-        return HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE
+def clickButton(run_sim, toggle_button):
+    if run_sim or toggle_button == 1:
+        logging.debug('Button click, time to hide')
+        return HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE, 1
     else:
-        logging.debug('Default position')
-        return  SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE
+        logging.debug('Back to normal button behaviour')
+        return  SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE, 0
 
 
 # 3. When trigger sim is set to value = 1, then simulation will run
@@ -51,11 +50,10 @@ def resetButtons(trigger_sim, sim_complete):
     Output('sim_complete', 'value'),
     Input('sim_duration', 'value'),
     Input('warm_up_time', 'value'),
-    Input('number_of_runs', 'value'),
-    Input('trigger_sim', 'value')
+    Input('submit_button', 'style'),
 )
-def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
-    if trigger_sim == 1:
+def configSim(sim_duration, submit_button_style, warm_up_time, number_of_runs, trigger_sim):
+    if submit_button_style == HIDE_BUTTON_STYLE:
         # Run the sim
         output = f"Sim duration: {sim_duration}; Warm-up time: {warm_up_time}; Number of runs: {number_of_runs}"
         logging.debug("Data submitted")
@@ -70,5 +68,6 @@ def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
 
         return 1
     else:
+        logging.debug('configSim triggered and returning 0')
         return 0
 
