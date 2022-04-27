@@ -49,10 +49,10 @@ def clickButton(run_sim, toggle_button):
 @app.callback(
     Output('sim_complete', 'value'),
     Input('sim_duration', 'value'),
-    Input('warm_up_time', 'value'),
     Input('submit_button', 'style'),
+    Input('warm_up_time', 'value'),
 )
-def configSim(sim_duration, submit_button_style, warm_up_time, number_of_runs, trigger_sim):
+def configSim(sim_duration, submit_button_style, warm_up_time, number_of_runs):
     if submit_button_style == HIDE_BUTTON_STYLE:
         # Run the sim
         output = f"Sim duration: {sim_duration}; Warm-up time: {warm_up_time}; Number of runs: {number_of_runs}"
