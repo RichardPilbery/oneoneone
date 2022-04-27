@@ -4,7 +4,7 @@ from layouts import SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE
 import logging
 from oneoneonedes import parallelProcess, prepStartingVars
 
-
+buttonClickCount = 0
 
 # 3. When trigger sim is set to value = 1, then simulation will run
 # When it has finished, sim_complete is set to 1
@@ -26,14 +26,20 @@ from oneoneonedes import parallelProcess, prepStartingVars
 def configSim(run_sim, sim_duration, warm_up_time, number_of_runs):
         # Run the sim
         logging.debug("Run the sim")
-        
-        prepStartingVars(
-            number_of_runs = number_of_runs, 
-            warm_up_time = warm_up_time, 
-            sim_duration = sim_duration
-        )
-        parallelProcess()
 
-        return 1
+        global buttonClickCount
+        
+        if run_sim > buttonClickCount:
+            buttonClickCount = run_sim
+            prepStartingVars(
+                number_of_runs = number_of_runs, 
+                warm_up_time = warm_up_time, 
+                sim_duration = sim_duration
+            )
+            parallelProcess()
+
+            return 1
+        else:
+            return 0
 
 
