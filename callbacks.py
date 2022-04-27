@@ -34,11 +34,8 @@ def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
 
 
 @app.callback(
-    Output('submit_button', 'style'),
-    Output('sim_run_button', 'style'),
     Output('trigger_sim', 'value'),
     Input('run_sim', 'n_clicks'),
-
 )
 def runSimulation(run_sim, sim_complete):
     global buttonClickCount
@@ -47,20 +44,20 @@ def runSimulation(run_sim, sim_complete):
 
     if run_sim > buttonClickCount:
         buttonClickCount = run_sim
-        return  HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE, 1
+        return  1
     else:
-        return  None, None, None
+        return  0
 
 
 @app.callback(
     Output('submit_button', 'style'),
     Output('sim_run_button', 'style'),
-    Output('trigger_sim', 'value'),
+    Input('trigger_sim', 'value'),
     Input('sim_complete', 'value')
 )
-def resetButtons(sim_complete):
+def resetButtons(sim_complete, trigger_sim):
     if sim_complete == 1:
         logging.debug('Sim is complete')
-        return  SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE, 0
+        return  SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE
     else:
-        return None, None, None
+        return HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE
