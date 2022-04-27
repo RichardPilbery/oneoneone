@@ -94,7 +94,7 @@ home = html.Div([
                                 dcc.Input(
                                     id="sim_complete", 
                                     type="hidden", 
-                                    value=0,
+                                    value=1,
                                 )
                             ],
                             style = {'display':'none'}
