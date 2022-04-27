@@ -10,7 +10,7 @@ from oneoneonedes import parallelProcess, prepStartingVars
 # 3. When trigger sim is set to value = 1, then simulation will run
 # When it has finished, sim_complete is set to 1
 @app.long_callback(
-    outputs = Output('sim_complete', 'value'),
+    output = Output('sim_complete', 'value'),
     inputs = Input('run_sim', 'n_clicks'),
     states = [
         State('sim_duration', 'value'),
@@ -20,14 +20,12 @@ from oneoneonedes import parallelProcess, prepStartingVars
     running = [
         (Output('submit_button', 'style'), HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE),
         (Output('sim_run_button', 'style'), SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE),
-    ]
+    ],
+    prevent_initial_call=True
 )
-def configSim(submit_button_style, sim_duration, warm_up_time, number_of_runs):
-    if submit_button_style == HIDE_BUTTON_STYLE:
+def configSim(run_sim, sim_duration, warm_up_time, number_of_runs):
         # Run the sim
-        output = f"Sim duration: {sim_duration}; Warm-up time: {warm_up_time}; Number of runs: {number_of_runs}"
-        logging.debug("Data submitted")
-        logging.debug(output)
+        logging.debug("Run the sim")
         
         prepStartingVars(
             number_of_runs = number_of_runs, 
@@ -37,7 +35,5 @@ def configSim(submit_button_style, sim_duration, warm_up_time, number_of_runs):
         parallelProcess()
 
         return 1
-    else:
-        logging.debug('configSim triggered and returning 0')
-        return 0
+
 
