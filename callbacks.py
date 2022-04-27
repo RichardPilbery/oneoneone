@@ -67,6 +67,8 @@ def configSim(sim_duration, warm_up_time, number_of_runs, trigger_sim):
 def resetButtons(trigger_sim, sim_complete):
     logging.debug(f"Trigger sim is {trigger_sim} and Sim complete is {sim_complete}")
     if trigger_sim == 1 & sim_complete == 0:
+        logging.debug('Sim is running but is not complete')
         return HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE
     else:
+        logging.debug('Default position')
         return  SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE
