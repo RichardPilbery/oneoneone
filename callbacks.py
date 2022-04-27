@@ -22,8 +22,8 @@ def runSimulation(sim_running, sim_complete):
         return 0
     elif sim_running == 1 and sim_complete == 0:
         return 1
-    elif sim_running == 0 and sim_complete == 1:
-        return 1
+    elif sim_running == 1 and sim_complete == 1:
+        return 0
 
 
 # 2. This will run and control button visibility when either 
