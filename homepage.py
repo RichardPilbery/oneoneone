@@ -90,7 +90,6 @@ home = html.Div([
                                     id="trigger_sim", 
                                     type="hidden", 
                                     value=0,
-                                    hidden=True
                                 )
                             ],
                             style = {'display':'block'}
