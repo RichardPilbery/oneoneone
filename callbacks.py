@@ -10,12 +10,12 @@ from oneoneonedes import parallelProcess, prepStartingVars
 # When it has finished, sim_complete is set to 1
 @app.long_callback(
     output = Output('sim_complete', 'value'),
-    inputs = Input('run_sim', 'n_clicks'),
-    states = [
+    inputs = (
+        Input('run_sim', 'n_clicks'),
         State('sim_duration', 'value'),
         State('warm_up_time', 'value'),
         State('number_of_runs', 'value'),
-    ],
+    ),
     running = [
         (Output('submit_button', 'style'), HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE),
         (Output('sim_run_button', 'style'), SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE),
