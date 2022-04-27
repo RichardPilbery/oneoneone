@@ -43,8 +43,8 @@ def buttonToggle(run_sim):
 
     if run_sim > buttonClickCount:
         buttonClickCount = run_sim
-        return  {'display':'none'}, {'display:block'}, 1
+        return  [{'display':'none'}, {'display:block'}, 1]
     else:
-        return  {'display':'block'}, {'display:none'}, 0
+        return  [{'display':'block'}, {'display:none'}, 0]
 
 
