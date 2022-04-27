@@ -56,8 +56,7 @@ def runSimulation(run_sim):
     Input('sim_complete', 'value')
 )
 def resetButtons(sim_complete, trigger_sim):
-    if sim_complete == 1:
-        logging.debug('Sim is complete')
-        return  SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE
-    else:
+    if trigger_sim == 1:
         return HIDE_BUTTON_STYLE, SHOW_BUTTON_STYLE
+    else:
+        return  SHOW_BUTTON_STYLE, HIDE_BUTTON_STYLE
