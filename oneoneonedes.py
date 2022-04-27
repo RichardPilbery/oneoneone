@@ -25,8 +25,6 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from g import G
 from hsm_model import HSM_Model
 
-logging.basicConfig(format='%(asctime)s %(message)s', filename='model.log', encoding='utf-8', level=logging.DEBUG)
-
 number_of_runs = G.number_of_runs
 warm_up_time = G.warm_up_duration
 sim_duration = G.sim_duration
