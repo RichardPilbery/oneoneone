@@ -28,6 +28,10 @@ HIDE_BUTTON_STYLE = {
     "display": "none"
 }
 
+DROPDOWN_STYLE = {
+    "margin-bottom":"20px"
+}
+
 #####################################
 # Create Auxiliary Components Here
 #####################################

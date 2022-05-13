@@ -1,6 +1,7 @@
 
 from dash import dcc, html
 import dash_bootstrap_components as dbc
+from layouts import DROPDOWN_STYLE
 import logging
 
 ### Layout 2
@@ -12,8 +13,23 @@ results = html.Div(
             [
                 dbc.Row(
                     [
-                        html.H4('Age distribution of patients'),
-                        dcc.Dropdown(id='age-dist-run-number'),
+                        html.Div([
+                            dcc.Dropdown(id='dropdown-run-number')
+                        ], style=DROPDOWN_STYLE),
+                        html.Hr(),
+                    ],
+                ),
+                dbc.Row(
+                    [
+                        html.H4('Call activity'),
+                        html.Div([
+                            dcc.Graph(id='ooo-call-volume')
+                        ]),
+                    ]
+                ),
+                dbc.Row(
+                    [
+                        html.H4('Patient demographics'),
                         html.Div([
                             dcc.Graph(id='age-dist')
                         ]),

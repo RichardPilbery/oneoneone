@@ -74,7 +74,7 @@ home = html.Div([
                             id="sim_run_button",
                             children=[
                                 dbc.Button(
-                                    [dbc.Spinner(size="sm"), " Loading..."],
+                                    [dbc.Spinner(size="sm"), " Simulation running..."],
                                     id="sim_running",
                                     color="primary",
                                     disabled=True,
