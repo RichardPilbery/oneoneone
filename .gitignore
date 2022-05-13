@@ -130,7 +130,7 @@ dmypy.json
 .Rproj.user
 
 # CSV files( can be big)
-all_results.csv
+*.csv
 
 
 .dockerenv
