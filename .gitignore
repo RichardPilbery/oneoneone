@@ -131,3 +131,17 @@ dmypy.json
 
 # CSV files( can be big)
 all_results.csv
+
+
+.dockerenv
+bin/
+cache/
+dev/
+etc/
+proc/
+root/
+run/
+sbin/
+sys/
+tmp/
+usr/
