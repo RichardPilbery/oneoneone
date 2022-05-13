@@ -11,12 +11,11 @@ import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 app.config.suppress_callback_exceptions = True
 
-buttonClickCount = 0
-
 # Define basic structure of app:
 # A horizontal navigation bar on the left side with page content on the right.
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False), #this locates this structure to the url
+    dcc.Store(id='store-num-runs', storage_type='local'),
     nav_bar(),
     html.Div(id='page-content',style=CONTENT_STYLE) #we'll use a callback to change the layout of this section 
 ])

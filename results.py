@@ -1,7 +1,7 @@
 
-from dash import html
+from dash import dcc, html
 import dash_bootstrap_components as dbc
-from figures import fig_age_dist
+import logging
 
 ### Layout 2
 results = html.Div(
@@ -12,8 +12,11 @@ results = html.Div(
             [
                 dbc.Row(
                     [
-                        html.H4('Insert results table here'),
-                        html.Hr(),
+                        html.H4('Age distribution of patients'),
+                        dcc.Dropdown(id='age-dist-run-number'),
+                        html.Div([
+                            dcc.Graph(id='age-dist')
+                        ]),
                     ]
                 ),
                 dbc.Row(

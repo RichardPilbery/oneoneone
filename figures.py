@@ -1,10 +1,16 @@
 import pandas as pd
 import plotly.express as px
+import logging
 
-df = pd.read_csv('all_results.csv')
 
+
+# Plot distribution of ages
+# Default is mean of all runs, but can specify using run_number
+
+# TODO - probably need to check how many runs there are
 def fig_age_dist(run_number = 999):
-    global df
+    logging.debug('Fig age dist')
+    print('fig_age_dist called')
 
     y_label = "Mean number of patients"
 
@@ -40,4 +46,4 @@ def fig_age_dist(run_number = 999):
     )
     fig.layout['yaxis_title'] =  y_label
     fig.update_traces(marker_line_width=0.5,marker_line_color="#333")
-    return fig.show()
+    return fig
